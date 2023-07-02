@@ -24,7 +24,7 @@
  *
  */
 function getComposition(f, g) {
-  return function (x) {
+  return function compositionFunction(x) {
     return f(g(x));
   };
 }
@@ -47,7 +47,7 @@ function getComposition(f, g) {
  *
  */
 function getPowerFunction(exponent) {
-  return function (x) {
+  return function getPower(x) {
     return x ** exponent;
   };
 }
@@ -98,7 +98,7 @@ function getPolynom(...coefficients) {
 function memoize(func) {
   const cache = {};
 
-  return function (...args) {
+  return function memoizeFunction(...args) {
     const key = JSON.stringify(args);
     if (cache[key] === undefined) {
       cache[key] = func(...args);
@@ -123,8 +123,20 @@ function memoize(func) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  return function retryFunction() {
+    let result;
+    let attempt = 0;
+    while (attempt < attempts) {
+      try {
+        result = func();
+        break;
+      } catch (error) {
+        attempt += 1;
+      }
+    }
+    return result;
+  };
 }
 
 
